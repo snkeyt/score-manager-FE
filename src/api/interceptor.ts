@@ -33,9 +33,16 @@ instant.interceptors.request.use(
 instant.interceptors.response.use(
   (response: AxiosResponse<HttpResponse>) => {
     const res = response.data;
+    if (response.status !== 200) {
+      Message.error({
+        content: res.msg,
+        duration: 3 * 1000,
+      });
+    }
     return res;
   },
   (error) => {
+    console.log('error: ', error);
     Message.error({
       content: error.msg,
       duration: 5 * 1000,
